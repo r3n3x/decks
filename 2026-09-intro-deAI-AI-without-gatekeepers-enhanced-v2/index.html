@@ -76,9 +76,10 @@ body{margin:0;background:var(--bg);color:var(--text);
 #deck{position:fixed;inset:0}
 .slide{position:absolute;inset:0;
   padding:clamp(40px,5vh,72px) clamp(22px,6vw,108px) clamp(46px,6vh,78px);
-  display:flex;flex-direction:column;justify-content:center;justify-content:safe center;
+  display:flex;flex-direction:column;justify-content:flex-start;
   overflow-y:auto;
   opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s ease}
+.slide--title{justify-content:center;justify-content:safe center}
 .slide.active{opacity:1;visibility:visible;pointer-events:auto}
 .slide.active .rise{animation:rise .55s cubic-bezier(.2,.7,.2,1) both}
 .slide.active .rise:nth-child(2){animation-delay:.04s}
@@ -332,6 +333,30 @@ strong { color: var(--accent); }
   padding-top: 12px;
   margin-top: 12px;
 }
+/* SVG theme-aware colors — centralized side */
+.svg-cen-bg { fill: rgba(255,255,255,0.03); stroke: rgba(255,255,255,0.16); }
+.svg-cen-text { fill: rgba(255,255,255,0.5); }
+.svg-cen-node { fill: rgba(255,255,255,0.3); }
+.svg-cen-label { fill: #0a0e1a; }
+.svg-cen-line { stroke: rgba(255,255,255,0.2); }
+.svg-cen-dot { fill: rgba(255,255,255,0.2); }
+.svg-sub { fill: rgba(255,255,255,0.5); }
+:root[data-theme="light"] .svg-cen-bg { fill: rgba(15,23,42,0.03); stroke: rgba(15,23,42,0.16); }
+:root[data-theme="light"] .svg-cen-text { fill: rgba(15,23,42,0.5); }
+:root[data-theme="light"] .svg-cen-node { fill: rgba(15,23,42,0.25); }
+:root[data-theme="light"] .svg-cen-label { fill: #ffffff; }
+:root[data-theme="light"] .svg-cen-line { stroke: rgba(15,23,42,0.2); }
+:root[data-theme="light"] .svg-cen-dot { fill: rgba(15,23,42,0.2); }
+:root[data-theme="light"] .svg-sub { fill: rgba(15,23,42,0.5); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .svg-cen-bg { fill: rgba(15,23,42,0.03); stroke: rgba(15,23,42,0.16); }
+  :root:not([data-theme]) .svg-cen-text { fill: rgba(15,23,42,0.5); }
+  :root:not([data-theme]) .svg-cen-node { fill: rgba(15,23,42,0.25); }
+  :root:not([data-theme]) .svg-cen-label { fill: #ffffff; }
+  :root:not([data-theme]) .svg-cen-line { stroke: rgba(15,23,42,0.2); }
+  :root:not([data-theme]) .svg-cen-dot { fill: rgba(15,23,42,0.2); }
+  :root:not([data-theme]) .svg-sub { fill: rgba(15,23,42,0.5); }
+}
 /* Chrome logo */
 .chrome-logo-svg {
   display: inline-block;
@@ -352,7 +377,7 @@ strong { color: var(--accent); }
 </header>
 
 <main id="deck">
-  <section class="slide" data-title="AI Without Gatekeepers" data-notes="Set the stage: AI is becoming a foundational technology layer, similar to electricity or the internet. The key question is whether we want this infrastructure controlled by a few gatekeepers or open for everyone to build on. The Morpheus logo here signals we'll end with a concrete example of decentralized AI. Transition: let's look at why this matters.">
+  <section class="slide slide--title" data-title="AI Without Gatekeepers" data-notes="Set the stage: AI is becoming a foundational technology layer, similar to electricity or the internet. The key question is whether we want this infrastructure controlled by a few gatekeepers or open for everyone to build on. The Morpheus logo here signals we'll end with a concrete example of decentralized AI. Transition: let's look at why this matters.">
     <div class="wrap">
   <p class="eyebrow rise">Why Open &amp; Decentralized AI Matters</p>
   <h1 class="rise">AI Without Gatekeepers</h1>
@@ -362,11 +387,11 @@ strong { color: var(--accent); }
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" style="height:28px;width:56px;display:inline-block;vertical-align:middle" fill="#1fdc8f"><path d="M893.94,181.91l34.57-74.69L609.79,241.86c-13.55,5.72-25.41,14.82-34.45,26.43L500,365.04l-75.35-96.75 c-9.04-11.6-20.9-20.7-34.45-26.43L71.49,107.22l34.57,74.69l258.26,109.1v27.96L122.14,216.66l34.57,74.69l207.61,87.7v27.96 L172.8,326.1l34.58,74.69l156.94,66.31l60.77,25.67V369.26L500,465.43l74.92-96.17v123.52l60.77-25.67l156.94-66.31l34.58-74.69 l-191.52,80.91v-27.96l207.61-87.7l34.57-74.69L635.68,318.97v-27.96L893.94,181.91z"/></svg>
     <span style="font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase">mor.org</span>
   </div>
-  <p class="rise hint" style="margin-top:24px">NAVIGATION &middot; N NOTES &middot; T THEME</p>
+
 </div>
   </section>
 
-  <section class="slide" data-title="Why Decentralized AI Matters" data-notes="Centralized AI creates single points of failure and dependency. Decentralized AI distributes control across participants, creating resilience and optionality. The goal is not to eliminate centralized AI but to create a viable alternative. Transition: open source and open weights are the foundation.">
+  <section class="slide slide--content" data-title="Why Decentralized AI Matters" data-notes="Centralized AI creates single points of failure and dependency. Decentralized AI distributes control across participants, creating resilience and optionality. The goal is not to eliminate centralized AI but to create a viable alternative. Transition: open source and open weights are the foundation.">
     <div class="wrap">
   <div class="header-zone rise">
     <p class="kicker">02</p>
@@ -385,22 +410,22 @@ strong { color: var(--accent); }
   </div>
   <div class="rise">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" style="width:100%;max-width:700px;margin-top:8px">
-  <rect width="380" height="180" x="10" y="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.16)" stroke-width="1" rx="6"/>
-  <text x="200" y="35" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="13" font-weight="bold" font-family="monospace" letter-spacing="1.5">CENTRALIZED</text>
-  <circle cx="200" cy="100" r="22" fill="rgba(255,255,255,0.3)" opacity="0.9"/>
-  <text x="200" y="105" text-anchor="middle" fill="#0a0e1a" font-size="9" font-weight="bold" font-family="monospace">1 PROVIDER</text>
-  <line x1="200" y1="122" x2="120" y2="155" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
-  <line x1="200" y1="122" x2="160" y2="155" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
-  <line x1="200" y1="122" x2="200" y2="155" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
-  <line x1="200" y1="122" x2="240" y2="155" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
-  <line x1="200" y1="122" x2="280" y2="155" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
-  <circle cx="120" cy="160" r="6" fill="rgba(255,255,255,0.2)"/>
-  <circle cx="160" cy="160" r="6" fill="rgba(255,255,255,0.2)"/>
-  <circle cx="200" cy="160" r="6" fill="rgba(255,255,255,0.2)"/>
-  <circle cx="240" cy="160" r="6" fill="rgba(255,255,255,0.2)"/>
-  <circle cx="280" cy="160" r="6" fill="rgba(255,255,255,0.2)"/>
+  <rect class="svg-cen-bg" width="380" height="180" x="10" y="10" rx="6"/>
+  <text x="200" y="35" text-anchor="middle" class="svg-cen-text" font-size="13" font-weight="bold" font-family="monospace" letter-spacing="1.5">CENTRALIZED</text>
+  <circle cx="200" cy="100" r="22" class="svg-cen-node" opacity="0.9"/>
+  <text x="200" y="105" text-anchor="middle" class="svg-cen-label" font-size="9" font-weight="bold" font-family="monospace">1 PROVIDER</text>
+  <line x1="200" y1="122" x2="120" y2="155" class="svg-cen-line" stroke-width="1.5"/>
+  <line x1="200" y1="122" x2="160" y2="155" class="svg-cen-line" stroke-width="1.5"/>
+  <line x1="200" y1="122" x2="200" y2="155" class="svg-cen-line" stroke-width="1.5"/>
+  <line x1="200" y1="122" x2="240" y2="155" class="svg-cen-line" stroke-width="1.5"/>
+  <line x1="200" y1="122" x2="280" y2="155" class="svg-cen-line" stroke-width="1.5"/>
+  <circle cx="120" cy="160" r="6" class="svg-cen-dot"/>
+  <circle cx="160" cy="160" r="6" class="svg-cen-dot"/>
+  <circle cx="200" cy="160" r="6" class="svg-cen-dot"/>
+  <circle cx="240" cy="160" r="6" class="svg-cen-dot"/>
+  <circle cx="280" cy="160" r="6" class="svg-cen-dot"/>
   <rect width="380" height="180" x="410" y="10" fill="rgba(31,220,143,0.05)" stroke="rgba(31,220,143,0.3)" stroke-width="1" rx="6"/>
-  <text x="600" y="35" text-anchor="middle" fill="#1fdc8f" font-size="13" font-weight="bold" font-family="monospace" letter-spacing="1.5">DECENTRALIZED</text>
+  <text x="600" y="35" text-anchor="middle" fill="#18c57d" font-size="13" font-weight="bold" font-family="monospace" letter-spacing="1.5">DECENTRALIZED</text>
   <circle cx="500" cy="70" r="10" fill="#1fdc8f" opacity="0.8"/>
   <circle cx="570" cy="55" r="10" fill="#1fdc8f" opacity="0.8"/>
   <circle cx="640" cy="70" r="10" fill="#1fdc8f" opacity="0.8"/>
@@ -433,7 +458,7 @@ strong { color: var(--accent); }
 </div>
   </section>
 
-  <section class="slide" data-title="Open Source &amp;amp; Open Weights" data-notes="Open source means the code is inspectable. Open weights means the trained model is available to run and adapt. Both are needed for true openness. The key shift is from consumption to participation — developers can understand, customize, and own their AI stack. Transition: but open models alone are not enough.">
+  <section class="slide slide--content" data-title="Open Source &amp;amp; Open Weights" data-notes="Open source means the code is inspectable. Open weights means the trained model is available to run and adapt. Both are needed for true openness. The key shift is from consumption to participation — developers can understand, customize, and own their AI stack. Transition: but open models alone are not enough.">
     <div class="wrap">
   <div class="header-zone rise">
     <p class="kicker">03</p>
@@ -459,7 +484,7 @@ strong { color: var(--accent); }
 </div>
   </section>
 
-  <section class="slide" data-title="From Open AI to Decentralized AI" data-notes="Open models are necessary but not sufficient. You need compute to run them, infrastructure to serve them, and incentives to sustain participation. Decentralized AI connects developers, models, compute providers, and users into a single open marketplace. Transition: Morpheus is a real-world example.">
+  <section class="slide slide--flow" data-title="From Open AI to Decentralized AI" data-notes="Open models are necessary but not sufficient. You need compute to run them, infrastructure to serve them, and incentives to sustain participation. Decentralized AI connects developers, models, compute providers, and users into a single open marketplace. Transition: Morpheus is a real-world example.">
     <div class="wrap">
   <div class="header-zone rise">
     <p class="kicker">04</p>
@@ -479,25 +504,25 @@ strong { color: var(--accent); }
   </defs>
   <rect x="20" y="25" width="140" height="50" fill="rgba(31,220,143,0.06)" stroke="#1fdc8f" stroke-width="1.5" rx="6"/>
   <text x="90" y="48" text-anchor="middle" fill="#1fdc8f" font-size="11" font-weight="bold" font-family="monospace">DEVELOPERS</text>
-  <text x="90" y="62" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">build agents</text>
+  <text x="90" y="62" text-anchor="middle" class="svg-sub" font-size="9" font-family="monospace">build agents</text>
   <line x1="160" y1="50" x2="220" y2="50" stroke="#1fdc8f" stroke-width="2" marker-end="url(#arrow)"/>
   <rect x="230" y="25" width="140" height="50" fill="rgba(31,220,143,0.06)" stroke="#1fdc8f" stroke-width="1.5" rx="6"/>
   <text x="300" y="48" text-anchor="middle" fill="#1fdc8f" font-size="11" font-weight="bold" font-family="monospace">MODELS</text>
-  <text x="300" y="62" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">open weights</text>
+  <text x="300" y="62" text-anchor="middle" class="svg-sub" font-size="9" font-family="monospace">open weights</text>
   <line x1="370" y1="50" x2="430" y2="50" stroke="#1fdc8f" stroke-width="2" marker-end="url(#arrow)"/>
   <rect x="440" y="25" width="140" height="50" fill="rgba(31,220,143,0.06)" stroke="#1fdc8f" stroke-width="1.5" rx="6"/>
   <text x="510" y="48" text-anchor="middle" fill="#1fdc8f" font-size="11" font-weight="bold" font-family="monospace">COMPUTE</text>
-  <text x="510" y="62" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">GPU providers</text>
+  <text x="510" y="62" text-anchor="middle" class="svg-sub" font-size="9" font-family="monospace">GPU providers</text>
   <line x1="580" y1="50" x2="640" y2="50" stroke="#1fdc8f" stroke-width="2" marker-end="url(#arrow)"/>
   <rect x="650" y="25" width="140" height="50" fill="rgba(31,220,143,0.06)" stroke="#1fdc8f" stroke-width="1.5" rx="6"/>
   <text x="720" y="48" text-anchor="middle" fill="#1fdc8f" font-size="11" font-weight="bold" font-family="monospace">USERS</text>
-  <text x="720" y="62" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">sovereign AI</text>
+  <text x="720" y="62" text-anchor="middle" class="svg-sub" font-size="9" font-family="monospace">sovereign AI</text>
 </svg>
   </div>
 </div>
   </section>
 
-  <section class="slide" data-title="Morpheus: An Example of DeAI" data-notes="Morpheus connects the four pillars: Code (developers), Capital (incentives), Compute (GPU providers), and Users. Developers build applications and AI agents on decentralized inference infrastructure. Compute providers contribute GPUs and serve open AI models. The bigger idea: AI should be something we collectively build, run, and control — not something we rent. mor.org for more.">
+  <section class="slide slide--content" data-title="Morpheus: An Example of DeAI" data-notes="Morpheus connects the four pillars: Code (developers), Capital (incentives), Compute (GPU providers), and Users. Developers build applications and AI agents on decentralized inference infrastructure. Compute providers contribute GPUs and serve open AI models. The bigger idea: AI should be something we collectively build, run, and control — not something we rent. mor.org for more.">
     <div class="wrap">
   <div class="header-zone rise">
     <p class="kicker">05</p>
