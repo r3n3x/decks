@@ -1,0 +1,533 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>AI Without Gatekeepers — Why Open &amp; Decentralized AI Matters</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="generator" content="RexDecks">
+<meta name="robots" content="noindex, nofollow">
+<style>
+/* ===== THEME CSS (injected by builder) ===== */
+/* ===== MORPHEUS THEME ===== */
+/* Decentralized AI aesthetic — dark default, electric blue/cyan accents */
+/* Modern, sleek, AI-infused look inspired by mor.org + morpheus.asia */
+
+:root{
+  --bg:#0a0e1a; --panel:#111827; --panel-2:#1a2235;
+  --text:#e2e8f0; --muted:#8b9bb4;
+  --line:rgba(226,232,240,.08); --line-strong:rgba(226,232,240,.16);
+  --accent:#06b6d4; --accent-ink:#0a0e1a; --accent-dim:rgba(6,182,212,.12);
+  --secondary:#8b5cf6; --secondary-dim:rgba(139,92,246,.1);
+  --shadow:0 20px 60px rgba(0,0,0,.5);
+  --radius:4px;
+  --serif:"SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --chrome-left:"MORPHEUS";
+  --chrome-right:"DECENTRALIZED AI";
+}
+/* Light mode for Morpheus (kept dark-leaning but readable) */
+:root[data-theme="light"]{
+  --bg:#f0f4f8; --panel:#e2e8f0; --panel-2:#f1f5f9;
+  --text:#0f172a; --muted:#475569;
+  --line:rgba(15,23,42,.08); --line-strong:rgba(15,23,42,.16);
+  --accent:#0891b2; --accent-ink:#0f172a; --accent-dim:rgba(8,145,178,.08);
+  --secondary:#7c3aed; --secondary-dim:rgba(124,58,237,.08);
+  --shadow:0 12px 40px rgba(15,23,42,.1);
+}
+:root[data-theme="dark"]{
+  --bg:#0a0e1a; --panel:#111827; --panel-2:#1a2235;
+  --text:#e2e8f0; --muted:#8b9bb4;
+  --line:rgba(226,232,240,.08); --line-strong:rgba(226,232,240,.16);
+  --accent:#06b6d4; --accent-ink:#0a0e1a; --accent-dim:rgba(6,182,212,.12);
+  --secondary:#8b5cf6; --secondary-dim:rgba(139,92,246,.1);
+  --shadow:0 20px 60px rgba(0,0,0,.5);
+}
+/* Default to dark for Morpheus theme */
+@media (prefers-color-scheme:light){
+  :root:not([data-theme]){
+    --bg:#f0f4f8; --panel:#e2e8f0; --panel-2:#f1f5f9;
+    --text:#0f172a; --muted:#475569;
+    --line:rgba(15,23,42,.08); --line-strong:rgba(15,23,42,.16);
+    --accent:#0891b2; --accent-ink:#0f172a; --accent-dim:rgba(8,145,178,.08);
+    --secondary:#7c3aed; --secondary-dim:rgba(124,58,237,.08);
+    --shadow:0 12px 40px rgba(15,23,42,.1);
+  }
+}
+
+/* Morpheus theme: glow effects, sleek edges */
+.progress{box-shadow:0 0 12px var(--accent),0 0 4px var(--accent)}
+.chrome{background:linear-gradient(180deg,rgba(6,182,212,.03),transparent)}
+.chrome.top{border-bottom:1px solid var(--line-strong);backdrop-filter:blur(10px)}
+.chrome.bot{border-top:1px solid var(--line-strong);backdrop-filter:blur(10px)}
+.card{background:var(--panel);border:1px solid var(--line-strong);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.navbtn{background:rgba(6,182,212,.05)}
+.navbtn:hover{background:var(--accent-dim);box-shadow:0 0 8px var(--accent-dim)}
+.stamp{background:var(--accent-dim);border-color:var(--accent);box-shadow:0 0 8px var(--accent-dim)}
+.filetab{background:linear-gradient(135deg,var(--accent),var(--secondary))}
+.slide.active .rise{animation:rise .55s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+
+/* ===== STRUCTURAL CSS (shared across all themes) ===== */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--serif);-webkit-font-smoothing:antialiased;overflow:hidden}
+:root{--sans:"Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+
+#deck{position:fixed;inset:0}
+.slide{position:absolute;inset:0;
+  padding:clamp(40px,5vh,72px) clamp(22px,6vw,108px) clamp(46px,6vh,78px);
+  display:flex;flex-direction:column;justify-content:center;justify-content:safe center;
+  overflow-y:auto;
+  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s ease}
+.slide.active{opacity:1;visibility:visible;pointer-events:auto}
+.slide.active .rise{animation:rise .55s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .rise:nth-child(2){animation-delay:.04s}
+.slide.active .rise:nth-child(3){animation-delay:.08s}
+.slide.active .rise:nth-child(4){animation-delay:.12s}
+.slide.active .rise:nth-child(5){animation-delay:.16s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.wrap{width:100%;max-width:1180px;margin:0 auto}
+
+.chrome{position:fixed;left:0;right:0;z-index:40;font-family:var(--mono);
+  font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  display:flex;gap:18px;align-items:center;pointer-events:none}
+.chrome.top{top:0;padding:13px clamp(22px,6vw,108px);border-bottom:1px solid var(--line)}
+.chrome.bot{bottom:0;padding:11px clamp(22px,6vw,108px);border-top:1px solid var(--line)}
+.chrome .sep{flex:1}
+.chrome b{color:var(--text);font-weight:400}
+.stampline{color:var(--accent)}
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:50;
+  width:0;transition:width .4s ease;box-shadow:0 0 12px var(--accent)}
+.navbtn{pointer-events:auto;cursor:pointer;background:none;border:1px solid var(--line-strong);
+  color:var(--text);font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  padding:5px 10px;border-radius:var(--radius,2px);text-transform:uppercase}
+.navbtn:hover{border-color:var(--accent);color:var(--accent)}
+.navbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.eyebrow{font-family:var(--mono);font-size:clamp(11px,1.1vw,13px);letter-spacing:.28em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 20px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 12px}
+h1{font-family:var(--sans);font-weight:800;line-height:.92;letter-spacing:-.02em;
+  text-transform:uppercase;margin:0;text-wrap:balance;font-size:clamp(38px,8.2vw,102px)}
+h2{font-family:var(--sans);font-weight:800;line-height:.98;letter-spacing:-.015em;
+  text-transform:uppercase;margin:0 0 6px;text-wrap:balance;font-size:clamp(28px,5vw,58px)}
+h3{font-family:var(--sans);font-weight:800;letter-spacing:-.01em;text-transform:uppercase;
+  font-size:clamp(14px,1.4vw,18px);margin:0 0 10px}
+p{line-height:1.6;font-size:clamp(14px,1.3vw,18px);color:var(--text);margin:0 0 12px;max-width:64ch}
+p.lead{font-size:clamp(17px,1.8vw,25px);color:var(--text);line-height:1.48;max-width:36ch}
+.muted{color:var(--muted)}
+strong{color:var(--accent);font-weight:700}
+.num{font-variant-numeric:tabular-nums}
+
+.redact{position:relative;background:var(--text);color:transparent;padding:0 .18em;border-radius:1px;
+  cursor:pointer;transition:background .5s ease,color .5s ease;white-space:nowrap}
+.redact.open{background:transparent;color:var(--accent)}
+.slide.active .redact.auto{animation:declass 1s ease 1.1s forwards}
+@keyframes declass{to{background:transparent;color:var(--accent)}}
+
+.evades{display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.evades .lab{color:var(--accent);white-space:nowrap;font-weight:700}
+.reg{border:1px solid var(--secondary);color:var(--secondary);padding:3px 8px;border-radius:2px;
+  background:var(--secondary-dim);white-space:nowrap}
+.stamp{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);border:2px solid var(--accent);
+  padding:5px 12px;border-radius:3px;transform:rotate(-3deg);background:var(--accent-dim);font-weight:700}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);border:1px solid var(--line-strong);padding:3px 9px;border-radius:20px}
+.stag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 7px;border-radius:2px;white-space:nowrap;vertical-align:middle;font-weight:700}
+.stag.live{color:var(--accent);border:1px solid var(--accent);background:var(--accent-dim)}
+.stag.prop{color:var(--secondary);border:1px solid var(--secondary);background:var(--secondary-dim)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.4vw,32px);align-items:stretch}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+.split{display:grid;grid-template-columns:0.82fr 1.18fr;gap:clamp(22px,4vw,56px);align-items:center}
+@media (max-width:860px){.grid2,.grid3,.split{grid-template-columns:1fr;gap:18px}
+  body{overflow:auto}
+  .slide{position:relative;min-height:100vh;opacity:1;visibility:visible;pointer-events:auto;display:none}
+  .slide.active{display:flex}}
+
+.card{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius,6px);padding:clamp(15px,1.7vw,22px)}
+.card h3{color:var(--text)}
+.flow{border-left:2px solid var(--line-strong);padding-left:18px;display:flex;flex-direction:column;gap:12px}
+.flow .step{position:relative}
+.flow .step::before{content:"";position:absolute;left:-25px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.flow .step .n{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase}
+.flow .step p{margin:2px 0 0;font-size:clamp(13.5px,1.15vw,16px)}
+ul.clean{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+ul.clean li{padding-left:19px;position:relative;line-height:1.48;font-size:clamp(13.5px,1.15vw,16px);max-width:62ch}
+ul.clean li::before{content:"\2192";position:absolute;left:0;color:var(--accent);font-family:var(--mono)}
+.stat{font-family:var(--sans);font-weight:800;font-size:clamp(30px,4.4vw,54px);line-height:1;color:var(--accent);letter-spacing:-.02em}
+.statlab{font-family:var(--mono);font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-top:8px;max-width:34ch}
+.filetab{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--bg);background:var(--accent);padding:5px 12px;border-radius:3px 3px 0 0}
+
+.agenda3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,44px)}
+@media(max-width:860px){.agenda3{grid-template-columns:1fr}}
+.agenda3 .sh{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);border-bottom:1px solid var(--line-strong);padding-bottom:7px;margin-bottom:4px}
+.agenda3 a{display:flex;gap:10px;padding:7px 4px;text-decoration:none;color:var(--text);cursor:pointer;
+  border-bottom:1px solid var(--line);align-items:baseline;transition:.18s}
+.agenda3 a:hover{color:var(--accent);padding-left:8px}
+.agenda3 .ix{font-family:var(--mono);color:var(--accent);font-size:12px;min-width:2.1em}
+.agenda3 .it{font-family:var(--sans);font-weight:700;text-transform:uppercase;font-size:clamp(12.5px,1.05vw,14.5px);letter-spacing:-.01em;line-height:1.15}
+
+.matrixwrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px}
+table.matrix{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}
+table.matrix th,table.matrix td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+table.matrix thead th{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--secondary);background:var(--secondary-dim);font-weight:400}
+table.matrix tbody th{text-align:left;font-family:var(--sans);font-weight:700;text-transform:uppercase;letter-spacing:-.01em;font-size:12.5px;color:var(--text);white-space:nowrap;position:sticky;left:0;background:var(--panel)}
+table.matrix .hit{color:var(--accent);font-weight:800;font-family:var(--mono)}
+table.matrix .no{color:var(--muted);opacity:.38}
+table.matrix tbody tr:hover td,table.matrix tbody tr:hover th{background:var(--accent-dim)}
+
+#notes{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--panel-2);
+  border-top:2px solid var(--accent);box-shadow:var(--shadow);
+  padding:16px clamp(22px,6vw,108px);transform:translateY(101%);transition:transform .3s ease;
+  max-height:44vh;overflow:auto}
+#notes.show{transform:none}
+#notes .lab{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+#notes p{font-size:15px;line-height:1.55;max-width:82ch;margin:0}
+.hint{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;color:var(--muted)}
+
+a.src{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-dim)}
+a.src:hover{border-color:var(--accent)}
+.srclist{columns:2;column-gap:44px;font-family:var(--mono);font-size:12px;line-height:1.7}
+.srclist div{break-inside:avoid;margin-bottom:6px;color:var(--muted)}
+@media(max-width:860px){.srclist{columns:1}}
+
+.agenda3 a:focus-visible,.agenda3 .sh:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media print{
+  body{overflow:visible}
+  .chrome,.progress,#notes{display:none!important}
+  .slide{position:relative;inset:auto;opacity:1!important;visibility:visible!important;
+    display:flex!important;page-break-after:always;min-height:auto;padding:26px 22px;overflow:visible}
+  .redact{background:transparent!important;color:var(--accent)!important}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* === v2 LAYOUT FIXES === */
+/* Consistent header zone: all slides get a fixed-height header area */
+.slide .wrap {
+  position: relative;
+}
+/* Header zone: kicker + h2 occupy same space on every slide */
+.header-zone {
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+/* Title slide: no header zone needed */
+.slide[data-title="AI Without Gatekeepers"] .header-zone {
+  display: none;
+}
+/* Image constraints: prevent overflow */
+.slide img {
+  max-height: 38vh;
+  object-fit: cover;
+  object-position: center;
+}
+/* Split layout images: smaller */
+.slide .split img {
+  max-height: 32vh;
+}
+/* Title slide: no image (logo only) — remove the large slide-1 image */
+/* Morpheus logo in top chrome */
+.chrome-logo {
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+  margin-right: 8px;
+  display: inline-block;
+}
+/* Ensure slides don't overflow vertically */
+.slide {
+  overflow-y: hidden;
+}
+/* Tighter spacing */
+.slide .wrap > p.kicker {
+  margin-bottom: 8px;
+}
+.slide h2 {
+  margin-bottom: 12px;
+}
+/* Footer takeaway style */
+.takeaway {
+  font-size: clamp(15px, 1.5vw, 20px);
+  color: var(--accent);
+  font-weight: 700;
+  line-height: 1.4;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+/* Logo in chrome */
+.chrome .logo-mark {
+  height: 18px;
+  width: 18px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+</style>
+
+<div class="progress" id="prog"></div>
+
+<header class="chrome top">
+  <span><img src="data:image/png;base64,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" alt="Morpheus" class="logo-mark">MORPHEUS</span>
+  <span class="sep"></span>
+  <span id="htitle" style="color:var(--text)"></span>
+  <span class="sep"></span>
+  <span class="stampline">DECENTRALIZED AI</span>
+</header>
+
+<main id="deck">
+  <section class="slide" data-title="AI Without Gatekeepers" data-notes="Set the stage: AI is becoming a foundational technology layer, similar to electricity or the internet. The key question is whether we want this infrastructure controlled by a few gatekeepers or open for everyone to build on. The Morpheus logo here signals we'll end with a concrete example of decentralized AI. Transition: let's look at why this matters.">
+    <div class="wrap">
+  <p class="eyebrow rise">Why Open &amp; Decentralized AI Matters</p>
+  <h1 class="rise">AI Without Gatekeepers</h1>
+  <p class="lead rise" style="margin-top:24px;max-width:44ch">AI is becoming infrastructure — like cloud, databases, the internet. But a few companies control it.</p>
+  <p class="lead rise" style="margin-top:8px;max-width:44ch;color:var(--accent)">Gatekeepers — or infrastructure for everyone?</p>
+  <div class="rise" style="margin-top:28px;display:flex;align-items:center;gap:12px">
+    <img src="data:image/png;base64,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" alt="Morpheus" style="height:32px;width:32px;border:none">
+    <span style="font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase">mor.org</span>
+  </div>
+  <p class="rise hint" style="margin-top:24px">NAVIGATION &middot; N NOTES &middot; T THEME</p>
+</div>
+  </section>
+
+  <section class="slide" data-title="Why Decentralized AI Matters" data-notes="Centralized AI creates single points of failure and dependency. Decentralized AI distributes control across participants, creating resilience and optionality. The goal is not to eliminate centralized AI but to create a viable alternative. Transition: open source and open weights are the foundation.">
+    <div class="wrap">
+  <div class="header-zone rise">
+    <p class="kicker">02</p>
+    <h2>Why Decentralized AI Matters</h2>
+  </div>
+  <div class="rise">
+    <p><strong>Centralized:</strong> one provider controls models, compute, APIs, data, availability, rules.</p>
+    <p><strong>Decentralized:</strong> capabilities distributed across many independent participants.</p>
+    <ul class="clean">
+      <li>More resilience</li>
+      <li>More choice</li>
+      <li>Greater privacy</li>
+      <li>Permissionless innovation</li>
+    </ul>
+    <p style="margin-top:12px;color:var(--muted)">Not replacing — creating an alternative.</p>
+  </div>
+  <div class="rise">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" style="width:100%;max-width:700px;margin-top:12px">
+  <rect width="380" height="180" x="10" y="10" fill="rgba(139,92,246,.08)" stroke="rgba(139,92,246,.3)" stroke-width="1" rx="6"/>
+  <text x="200" y="35" text-anchor="middle" fill="#8b5cf6" font-size="13" font-weight="bold" font-family="monospace" letter-spacing="1.5">CENTRALIZED</text>
+  <circle cx="200" cy="100" r="22" fill="#8b5cf6" opacity="0.9"/>
+  <text x="200" y="105" text-anchor="middle" fill="#0a0e1a" font-size="9" font-weight="bold" font-family="monospace">1 PROVIDER</text>
+  <line x1="200" y1="122" x2="120" y2="155" stroke="#8b5cf6" stroke-width="1.5" opacity="0.5"/>
+  <line x1="200" y1="122" x2="160" y2="155" stroke="#8b5cf6" stroke-width="1.5" opacity="0.5"/>
+  <line x1="200" y1="122" x2="200" y2="155" stroke="#8b5cf6" stroke-width="1.5" opacity="0.5"/>
+  <line x1="200" y1="122" x2="240" y2="155" stroke="#8b5cf6" stroke-width="1.5" opacity="0.5"/>
+  <line x1="200" y1="122" x2="280" y2="155" stroke="#8b5cf6" stroke-width="1.5" opacity="0.5"/>
+  <circle cx="120" cy="160" r="6" fill="#8b5cf6" opacity="0.4"/>
+  <circle cx="160" cy="160" r="6" fill="#8b5cf6" opacity="0.4"/>
+  <circle cx="200" cy="160" r="6" fill="#8b5cf6" opacity="0.4"/>
+  <circle cx="240" cy="160" r="6" fill="#8b5cf6" opacity="0.4"/>
+  <circle cx="280" cy="160" r="6" fill="#8b5cf6" opacity="0.4"/>
+  <rect width="380" height="180" x="410" y="10" fill="rgba(6,182,212,.08)" stroke="rgba(6,182,212,.3)" stroke-width="1" rx="6"/>
+  <text x="600" y="35" text-anchor="middle" fill="#06b6d4" font-size="13" font-weight="bold" font-family="monospace" letter-spacing="1.5">DECENTRALIZED</text>
+  <circle cx="500" cy="70" r="10" fill="#06b6d4" opacity="0.8"/>
+  <circle cx="570" cy="55" r="10" fill="#06b6d4" opacity="0.8"/>
+  <circle cx="640" cy="70" r="10" fill="#06b6d4" opacity="0.8"/>
+  <circle cx="710" cy="55" r="10" fill="#06b6d4" opacity="0.8"/>
+  <circle cx="530" cy="120" r="10" fill="#06b6d4" opacity="0.8"/>
+  <circle cx="600" cy="135" r="10" fill="#06b6d4" opacity="0.8"/>
+  <circle cx="680" cy="120" r="10" fill="#06b6d4" opacity="0.8"/>
+  <circle cx="750" cy="135" r="10" fill="#06b6d4" opacity="0.8"/>
+  <circle cx="470" cy="150" r="10" fill="#06b6d4" opacity="0.8"/>
+  <circle cx="570" cy="160" r="10" fill="#06b6d4" opacity="0.8"/>
+  <circle cx="670" cy="160" r="10" fill="#06b6d4" opacity="0.8"/>
+  <line x1="500" y1="70" x2="570" y2="55" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="570" y1="55" x2="640" y2="70" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="640" y1="70" x2="710" y2="55" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="500" y1="70" x2="530" y2="120" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="570" y1="55" x2="600" y2="135" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="640" y1="70" x2="680" y2="120" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="710" y1="55" x2="750" y2="135" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="530" y1="120" x2="600" y2="135" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="600" y1="135" x2="680" y2="120" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="680" y1="120" x2="750" y2="135" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="530" y1="120" x2="470" y2="150" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="600" y1="135" x2="570" y2="160" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="680" y1="120" x2="670" y2="160" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="750" y1="135" x2="670" y2="160" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="470" y1="150" x2="570" y2="160" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="570" y1="160" x2="670" y2="160" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+</svg>
+  </div>
+</div>
+  </section>
+
+  <section class="slide" data-title="Open Source &amp;amp; Open Weights" data-notes="Open source means the code is inspectable. Open weights means the trained model is available to run and adapt. Both are needed for true openness. The key shift is from consumption to participation — developers can understand, customize, and own their AI stack. Transition: but open models alone are not enough.">
+    <div class="wrap">
+  <div class="header-zone rise">
+    <p class="kicker">03</p>
+    <h2>Open Source &amp; Open Weights</h2>
+  </div>
+  <div class="split rise" style="margin-top:8px">
+    <div>
+      <p><strong>Open source</strong> — inspect, modify, contribute.</p>
+      <p><strong>Open weights</strong> — run and adapt the model.</p>
+      <ul class="clean" style="margin-top:8px">
+        <li>Run AI locally</li>
+        <li>Customize for your needs</li>
+        <li>Audit what you use</li>
+        <li>Build without permission</li>
+        <li>No provider lock-in</li>
+      </ul>
+      <p style="margin-top:12px">AI you <strong>build on</strong> — not just consume.</p>
+    </div>
+    <div style="max-width:420px">
+      <img src="slide-3.jpg" alt="Open AI — transparency and inspectability" style="width:100%;border-radius:var(--radius,4px);border:1px solid var(--line-strong)">
+    </div>
+  </div>
+</div>
+  </section>
+
+  <section class="slide" data-title="From Open AI to Decentralized AI" data-notes="Open models are necessary but not sufficient. You need compute to run them, infrastructure to serve them, and incentives to sustain participation. Decentralized AI connects developers, models, compute providers, and users into a single open marketplace where each participant contributes what they have and gets rewarded. Transition: Morpheus is a real-world example.">
+    <div class="wrap">
+  <div class="header-zone rise">
+    <p class="kicker">04</p>
+    <h2>From Open AI to Decentralized AI</h2>
+  </div>
+  <div class="rise">
+    <p>Open models aren't enough. You need <strong>compute, infrastructure, incentives</strong>.</p>
+    <p>Instead of one company owning the stack, independent participants contribute resources and get rewarded.</p>
+    <p style="color:var(--accent);margin-top:4px">An open AI marketplace where anyone can participate.</p>
+  </div>
+  <div class="rise">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 100" style="width:100%;max-width:700px;margin-top:12px">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#06b6d4"/>
+    </marker>
+  </defs>
+  <rect x="20" y="25" width="140" height="50" fill="rgba(6,182,212,.08)" stroke="#06b6d4" stroke-width="1.5" rx="6"/>
+  <text x="90" y="48" text-anchor="middle" fill="#06b6d4" font-size="11" font-weight="bold" font-family="monospace">DEVELOPERS</text>
+  <text x="90" y="62" text-anchor="middle" fill="#8b9bb4" font-size="9" font-family="monospace">build agents</text>
+  <line x1="160" y1="50" x2="220" y2="50" stroke="#06b6d4" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="230" y="25" width="140" height="50" fill="rgba(6,182,212,.08)" stroke="#06b6d4" stroke-width="1.5" rx="6"/>
+  <text x="300" y="48" text-anchor="middle" fill="#06b6d4" font-size="11" font-weight="bold" font-family="monospace">MODELS</text>
+  <text x="300" y="62" text-anchor="middle" fill="#8b9bb4" font-size="9" font-family="monospace">open weights</text>
+  <line x1="370" y1="50" x2="430" y2="50" stroke="#06b6d4" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="440" y="25" width="140" height="50" fill="rgba(6,182,212,.08)" stroke="#06b6d4" stroke-width="1.5" rx="6"/>
+  <text x="510" y="48" text-anchor="middle" fill="#06b6d4" font-size="11" font-weight="bold" font-family="monospace">COMPUTE</text>
+  <text x="510" y="62" text-anchor="middle" fill="#8b9bb4" font-size="9" font-family="monospace">GPU providers</text>
+  <line x1="580" y1="50" x2="640" y2="50" stroke="#06b6d4" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="650" y="25" width="140" height="50" fill="rgba(6,182,212,.08)" stroke="#06b6d4" stroke-width="1.5" rx="6"/>
+  <text x="720" y="48" text-anchor="middle" fill="#06b6d4" font-size="11" font-weight="bold" font-family="monospace">USERS</text>
+  <text x="720" y="62" text-anchor="middle" fill="#8b9bb4" font-size="9" font-family="monospace">sovereign AI</text>
+</svg>
+  </div>
+</div>
+  </section>
+
+  <section class="slide" data-title="Morpheus: An Example of DeAI" data-notes="Morpheus connects the four pillars: Code (developers), Capital (incentives), Compute (GPU providers), and Users. Developers build applications and AI agents on decentralized inference infrastructure. Compute providers contribute GPUs and serve open AI models. The bigger idea: AI should be something we collectively build, run, and control — not something we rent from a handful of companies. mor.org for more.">
+    <div class="wrap">
+  <div class="header-zone rise">
+    <p class="kicker">05</p>
+    <h2>Morpheus: An Example of DeAI</h2>
+  </div>
+  <div class="split rise" style="margin-top:8px">
+    <div>
+      <p>Open-source decentralized AI — <strong>private, sovereign, permissionless</strong>.</p>
+      <div style="display:flex;align-items:center;gap:8px;margin:8px 0">
+        <img src="data:image/png;base64,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" alt="Morpheus" style="height:20px;width:20px;border:none">
+        <span style="font-family:var(--mono);font-size:12px;color:var(--accent)">Connects:</span>
+      </div>
+      <ul class="clean" style="margin-top:4px">
+        <li>Code — developers build agents</li>
+        <li>Capital — incentives for participation</li>
+        <li>Compute — GPU providers serve models</li>
+        <li>Users — sovereign AI access</li>
+      </ul>
+      <p style="margin-top:8px"><a href="https://mor.org" class="src" target="_blank">mor.org</a></p>
+    </div>
+    <div style="max-width:420px">
+      <img src="slide-5.jpg" alt="Morpheus decentralized AI network" style="width:100%;border-radius:var(--radius,4px);border:1px solid var(--line-strong)">
+    </div>
+  </div>
+  <div class="rise takeaway">
+    Open models give us freedom to build.<br>Decentralization gives us freedom to participate.
+  </div>
+</div>
+  </section>
+</main>
+
+<div id="notes"><div class="lab">Speaker notes</div><p id="notesbody"></p></div>
+
+<footer class="chrome bot">
+  <button class="navbtn" id="prev">Back</button>
+  <button class="navbtn" id="next">Next</button>
+  <span class="sep"></span>
+  <span id="counter">01 / 01</span>
+  <span class="sep"></span>
+  <span class="hint">N notes &middot; T theme &middot; F fullscreen</span>
+</footer>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var i=0,N=slides.length;
+  var prog=document.getElementById('prog'),htitle=document.getElementById('htitle'),
+      counter=document.getElementById('counter'),notes=document.getElementById('notes'),
+      notesbody=document.getElementById('notesbody');
+  function pad(n){return (n<10?'0':'')+n;}
+  function show(n){
+    i=Math.max(0,Math.min(N-1,n));
+    slides.forEach(function(s,x){s.classList.toggle('active',x===i);});
+    prog.style.width=(N>1?(i/(N-1)*100):0)+'%';
+    counter.textContent=pad(i+1)+' / '+pad(N);
+    htitle.textContent=slides[i].getAttribute('data-title')||'';
+    notesbody.textContent=slides[i].getAttribute('data-notes')||'';
+    if(location.hash!=='#'+(i+1)){history.replaceState(null,'','#'+(i+1));}
+  }
+  function next(){show(i+1);} function prev(){show(i-1);}
+  document.getElementById('next').onclick=function(e){e.stopPropagation();next();};
+  document.getElementById('prev').onclick=function(e){e.stopPropagation();prev();};
+  document.querySelectorAll('[data-go]').forEach(function(a){
+    a.setAttribute('tabindex','0');a.setAttribute('role','link');
+    function go(e){e.stopPropagation();show(parseInt(a.getAttribute('data-go'),10));}
+    a.addEventListener('click',go);
+    a.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go(e);}});
+  });
+  document.querySelectorAll('.redact').forEach(function(r){
+    r.addEventListener('click',function(e){e.stopPropagation();r.classList.toggle('open');});
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();next();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}
+    else if(e.key==='Home'){show(0);} else if(e.key==='End'){show(N-1);}
+    else if(e.key==='n'||e.key==='N'){notes.classList.toggle('show');}
+    else if(e.key==='t'||e.key==='T'){
+      var cur=document.documentElement.getAttribute('data-theme');
+      var isDark=cur?cur==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+      document.documentElement.setAttribute('data-theme',isDark?'light':'dark');
+    }
+    else if(e.key==='f'||e.key==='F'){
+      if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}
+      else{document.exitFullscreen&&document.exitFullscreen();}
+    }
+  });
+  document.getElementById('deck').addEventListener('click',function(e){
+    if(e.target.closest('a,button,.redact,.agenda3,[data-go]'))return;
+    next();
+  });
+  var sx=0;
+  addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+  addEventListener('touchend',function(e){
+    var dx=e.changedTouches[0].clientX-sx;
+    if(Math.abs(dx)>55){dx<0?next():prev();}
+  },{passive:true});
+  var h=parseInt((location.hash||'').replace('#',''),10);
+  show(isNaN(h)?0:h-1);
+})();
+</script>
