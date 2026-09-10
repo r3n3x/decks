@@ -208,68 +208,135 @@ a.src:hover{border-color:var(--accent)}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* === v2 LAYOUT FIXES === */
-/* Consistent header zone: all slides get a fixed-height header area */
-.slide .wrap {
-  position: relative;
+/* === MORPHEUS.ASIA COLOR OVERRIDE === */
+:root, :root[data-theme="dark"] {
+  --bg: #0a0e1a;
+  --panel: #111827;
+  --panel-2: #1a2235;
+  --text: #ffffff;
+  --muted: rgba(255,255,255,0.65);
+  --line: rgba(255,255,255,0.08);
+  --line-strong: rgba(255,255,255,0.16);
+  --accent: #1fdc8f;
+  --accent-ink: #0a0e1a;
+  --accent-dim: rgba(31,220,143,0.12);
+  --secondary: #18c57d;
+  --secondary-dim: rgba(24,197,125,0.1);
+  --shadow: 0 20px 60px rgba(0,0,0,0.5);
+  --radius: 4px;
+  --serif: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
-/* Header zone: kicker + h2 occupy same space on every slide */
+:root[data-theme="light"] {
+  --bg: #f0f4f8;
+  --panel: #e2e8f0;
+  --panel-2: #f1f5f9;
+  --text: #0f172a;
+  --muted: #475569;
+  --line: rgba(15,23,42,0.08);
+  --line-strong: rgba(15,23,42,0.16);
+  --accent: #18c57d;
+  --accent-ink: #0f172a;
+  --accent-dim: rgba(24,197,125,0.08);
+  --secondary: #14b8a6;
+  --secondary-dim: rgba(20,184,166,0.08);
+  --shadow: 0 12px 40px rgba(15,23,42,0.1);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --bg: #f0f4f8;
+    --panel: #e2e8f0;
+    --panel-2: #f1f5f9;
+    --text: #0f172a;
+    --muted: #475569;
+    --line: rgba(15,23,42,0.08);
+    --line-strong: rgba(15,23,42,0.16);
+    --accent: #18c57d;
+    --accent-ink: #0f172a;
+    --accent-dim: rgba(24,197,125,0.08);
+    --secondary: #14b8a6;
+    --secondary-dim: rgba(20,184,166,0.08);
+    --shadow: 0 12px 40px rgba(15,23,42,0.1);
+  }
+}
+/* Progress bar and glow effects */
+.progress { box-shadow: 0 0 12px var(--accent), 0 0 4px var(--accent); }
+.chrome { background: linear-gradient(180deg, rgba(31,220,143,0.03), transparent); }
+.chrome.top { border-bottom: 1px solid var(--line-strong); backdrop-filter: blur(10px); }
+.chrome.bot { border-top: 1px solid var(--line-strong); backdrop-filter: blur(10px); }
+.card { background: var(--panel); border: 1px solid var(--line-strong); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.navbtn { background: rgba(31,220,143,0.05); }
+.navbtn:hover { background: var(--accent-dim); box-shadow: 0 0 8px var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+.stamp { background: var(--accent-dim); border-color: var(--accent); box-shadow: 0 0 8px var(--accent-dim); }
+.filetab { background: linear-gradient(135deg, var(--accent), var(--secondary)); }
+ul.clean li::before { content: "\2192"; color: var(--accent); }
+a.src { color: var(--accent); border-bottom-color: var(--accent-dim); }
+a.src:hover { border-color: var(--accent); }
+strong { color: var(--accent); }
+.kicker { color: var(--muted); }
+.eyebrow { color: var(--accent); }
+.flow .step::before { background: var(--accent); }
+.flow .step .n { color: var(--accent); }
+.flow { border-left-color: var(--line-strong); }
+#notes { border-top-color: var(--accent); background: var(--panel-2); }
+#notes .lab { color: var(--accent); }
+.takeaway { color: var(--accent); border-top-color: var(--line); }
+
+
+/* === v3 LAYOUT FIXES === */
+/* All slides: top-aligned with consistent padding so headlines align */
+.slide {
+  justify-content: flex-start !important;
+  padding-top: clamp(60px, 8vh, 90px) !important;
+  padding-bottom: clamp(50px, 6vh, 70px) !important;
+  overflow-y: hidden;
+}
+/* Title slide: center vertically (exception) */
+.slide[data-title="AI Without Gatekeepers"] {
+  justify-content: center !important;
+}
+/* Header zone: fixed height so h2 sits at same position on every content slide */
 .header-zone {
-  min-height: 80px;
+  height: 70px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: flex-end;
+  margin-bottom: 16px;
 }
-/* Title slide: no header zone needed */
-.slide[data-title="AI Without Gatekeepers"] .header-zone {
-  display: none;
+.header-zone .kicker {
+  margin: 0 0 4px 0;
+  line-height: 1;
 }
-/* Image constraints: prevent overflow */
+.header-zone h2 {
+  margin: 0;
+  line-height: 1;
+}
+/* Image constraints */
 .slide img {
-  max-height: 38vh;
+  max-height: 35vh;
   object-fit: cover;
   object-position: center;
 }
-/* Split layout images: smaller */
 .slide .split img {
-  max-height: 32vh;
+  max-height: 30vh;
 }
-/* Title slide: no image (logo only) — remove the large slide-1 image */
-/* Morpheus logo in top chrome */
-.chrome-logo {
-  height: 20px;
-  width: 20px;
-  vertical-align: middle;
-  margin-right: 8px;
-  display: inline-block;
-}
-/* Ensure slides don't overflow vertically */
-.slide {
-  overflow-y: hidden;
-}
-/* Tighter spacing */
-.slide .wrap > p.kicker {
+/* Tighter paragraph spacing */
+.slide p {
   margin-bottom: 8px;
 }
-.slide h2 {
-  margin-bottom: 12px;
-}
-/* Footer takeaway style */
+/* Takeaway block */
 .takeaway {
   font-size: clamp(15px, 1.5vw, 20px);
-  color: var(--accent);
   font-weight: 700;
   line-height: 1.4;
   border-top: 1px solid var(--line);
   padding-top: 12px;
   margin-top: 12px;
 }
-/* Logo in chrome */
-.chrome .logo-mark {
-  height: 18px;
-  width: 18px;
-  margin-right: 6px;
+/* Chrome logo */
+.chrome-logo-svg {
+  display: inline-block;
   vertical-align: middle;
+  margin-right: 6px;
 }
 
 </style>
@@ -277,7 +344,7 @@ a.src:hover{border-color:var(--accent)}
 <div class="progress" id="prog"></div>
 
 <header class="chrome top">
-  <span><img src="data:image/png;base64,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" alt="Morpheus" class="logo-mark">MORPHEUS</span>
+  <span><span class="chrome-logo-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" style="height:16px;width:32px;display:inline-block;vertical-align:middle" fill="#1fdc8f"><path d="M893.94,181.91l34.57-74.69L609.79,241.86c-13.55,5.72-25.41,14.82-34.45,26.43L500,365.04l-75.35-96.75 c-9.04-11.6-20.9-20.7-34.45-26.43L71.49,107.22l34.57,74.69l258.26,109.1v27.96L122.14,216.66l34.57,74.69l207.61,87.7v27.96 L172.8,326.1l34.58,74.69l156.94,66.31l60.77,25.67V369.26L500,465.43l74.92-96.17v123.52l60.77-25.67l156.94-66.31l34.58-74.69 l-191.52,80.91v-27.96l207.61-87.7l34.57-74.69L635.68,318.97v-27.96L893.94,181.91z"/></svg></span>MORPHEUS</span>
   <span class="sep"></span>
   <span id="htitle" style="color:var(--text)"></span>
   <span class="sep"></span>
@@ -291,8 +358,8 @@ a.src:hover{border-color:var(--accent)}
   <h1 class="rise">AI Without Gatekeepers</h1>
   <p class="lead rise" style="margin-top:24px;max-width:44ch">AI is becoming infrastructure — like cloud, databases, the internet. But a few companies control it.</p>
   <p class="lead rise" style="margin-top:8px;max-width:44ch;color:var(--accent)">Gatekeepers — or infrastructure for everyone?</p>
-  <div class="rise" style="margin-top:28px;display:flex;align-items:center;gap:12px">
-    <img src="data:image/png;base64,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" alt="Morpheus" style="height:32px;width:32px;border:none">
+  <div class="rise" style="margin-top:28px;display:flex;align-items:center;gap:10px">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" style="height:28px;width:56px;display:inline-block;vertical-align:middle" fill="#1fdc8f"><path d="M893.94,181.91l34.57-74.69L609.79,241.86c-13.55,5.72-25.41,14.82-34.45,26.43L500,365.04l-75.35-96.75 c-9.04-11.6-20.9-20.7-34.45-26.43L71.49,107.22l34.57,74.69l258.26,109.1v27.96L122.14,216.66l34.57,74.69l207.61,87.7v27.96 L172.8,326.1l34.58,74.69l156.94,66.31l60.77,25.67V369.26L500,465.43l74.92-96.17v123.52l60.77-25.67l156.94-66.31l34.58-74.69 l-191.52,80.91v-27.96l207.61-87.7l34.57-74.69L635.68,318.97v-27.96L893.94,181.91z"/></svg>
     <span style="font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase">mor.org</span>
   </div>
   <p class="rise hint" style="margin-top:24px">NAVIGATION &middot; N NOTES &middot; T THEME</p>
@@ -314,53 +381,53 @@ a.src:hover{border-color:var(--accent)}
       <li>Greater privacy</li>
       <li>Permissionless innovation</li>
     </ul>
-    <p style="margin-top:12px;color:var(--muted)">Not replacing — creating an alternative.</p>
+    <p style="margin-top:8px;color:var(--muted)">Not replacing — creating an alternative.</p>
   </div>
   <div class="rise">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" style="width:100%;max-width:700px;margin-top:12px">
-  <rect width="380" height="180" x="10" y="10" fill="rgba(139,92,246,.08)" stroke="rgba(139,92,246,.3)" stroke-width="1" rx="6"/>
-  <text x="200" y="35" text-anchor="middle" fill="#8b5cf6" font-size="13" font-weight="bold" font-family="monospace" letter-spacing="1.5">CENTRALIZED</text>
-  <circle cx="200" cy="100" r="22" fill="#8b5cf6" opacity="0.9"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" style="width:100%;max-width:700px;margin-top:8px">
+  <rect width="380" height="180" x="10" y="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.16)" stroke-width="1" rx="6"/>
+  <text x="200" y="35" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="13" font-weight="bold" font-family="monospace" letter-spacing="1.5">CENTRALIZED</text>
+  <circle cx="200" cy="100" r="22" fill="rgba(255,255,255,0.3)" opacity="0.9"/>
   <text x="200" y="105" text-anchor="middle" fill="#0a0e1a" font-size="9" font-weight="bold" font-family="monospace">1 PROVIDER</text>
-  <line x1="200" y1="122" x2="120" y2="155" stroke="#8b5cf6" stroke-width="1.5" opacity="0.5"/>
-  <line x1="200" y1="122" x2="160" y2="155" stroke="#8b5cf6" stroke-width="1.5" opacity="0.5"/>
-  <line x1="200" y1="122" x2="200" y2="155" stroke="#8b5cf6" stroke-width="1.5" opacity="0.5"/>
-  <line x1="200" y1="122" x2="240" y2="155" stroke="#8b5cf6" stroke-width="1.5" opacity="0.5"/>
-  <line x1="200" y1="122" x2="280" y2="155" stroke="#8b5cf6" stroke-width="1.5" opacity="0.5"/>
-  <circle cx="120" cy="160" r="6" fill="#8b5cf6" opacity="0.4"/>
-  <circle cx="160" cy="160" r="6" fill="#8b5cf6" opacity="0.4"/>
-  <circle cx="200" cy="160" r="6" fill="#8b5cf6" opacity="0.4"/>
-  <circle cx="240" cy="160" r="6" fill="#8b5cf6" opacity="0.4"/>
-  <circle cx="280" cy="160" r="6" fill="#8b5cf6" opacity="0.4"/>
-  <rect width="380" height="180" x="410" y="10" fill="rgba(6,182,212,.08)" stroke="rgba(6,182,212,.3)" stroke-width="1" rx="6"/>
-  <text x="600" y="35" text-anchor="middle" fill="#06b6d4" font-size="13" font-weight="bold" font-family="monospace" letter-spacing="1.5">DECENTRALIZED</text>
-  <circle cx="500" cy="70" r="10" fill="#06b6d4" opacity="0.8"/>
-  <circle cx="570" cy="55" r="10" fill="#06b6d4" opacity="0.8"/>
-  <circle cx="640" cy="70" r="10" fill="#06b6d4" opacity="0.8"/>
-  <circle cx="710" cy="55" r="10" fill="#06b6d4" opacity="0.8"/>
-  <circle cx="530" cy="120" r="10" fill="#06b6d4" opacity="0.8"/>
-  <circle cx="600" cy="135" r="10" fill="#06b6d4" opacity="0.8"/>
-  <circle cx="680" cy="120" r="10" fill="#06b6d4" opacity="0.8"/>
-  <circle cx="750" cy="135" r="10" fill="#06b6d4" opacity="0.8"/>
-  <circle cx="470" cy="150" r="10" fill="#06b6d4" opacity="0.8"/>
-  <circle cx="570" cy="160" r="10" fill="#06b6d4" opacity="0.8"/>
-  <circle cx="670" cy="160" r="10" fill="#06b6d4" opacity="0.8"/>
-  <line x1="500" y1="70" x2="570" y2="55" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="570" y1="55" x2="640" y2="70" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="640" y1="70" x2="710" y2="55" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="500" y1="70" x2="530" y2="120" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="570" y1="55" x2="600" y2="135" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="640" y1="70" x2="680" y2="120" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="710" y1="55" x2="750" y2="135" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="530" y1="120" x2="600" y2="135" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="600" y1="135" x2="680" y2="120" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="680" y1="120" x2="750" y2="135" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="530" y1="120" x2="470" y2="150" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="600" y1="135" x2="570" y2="160" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="680" y1="120" x2="670" y2="160" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="750" y1="135" x2="670" y2="160" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="470" y1="150" x2="570" y2="160" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
-  <line x1="570" y1="160" x2="670" y2="160" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+  <line x1="200" y1="122" x2="120" y2="155" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+  <line x1="200" y1="122" x2="160" y2="155" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+  <line x1="200" y1="122" x2="200" y2="155" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+  <line x1="200" y1="122" x2="240" y2="155" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+  <line x1="200" y1="122" x2="280" y2="155" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+  <circle cx="120" cy="160" r="6" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="160" cy="160" r="6" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="200" cy="160" r="6" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="240" cy="160" r="6" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="280" cy="160" r="6" fill="rgba(255,255,255,0.2)"/>
+  <rect width="380" height="180" x="410" y="10" fill="rgba(31,220,143,0.05)" stroke="rgba(31,220,143,0.3)" stroke-width="1" rx="6"/>
+  <text x="600" y="35" text-anchor="middle" fill="#1fdc8f" font-size="13" font-weight="bold" font-family="monospace" letter-spacing="1.5">DECENTRALIZED</text>
+  <circle cx="500" cy="70" r="10" fill="#1fdc8f" opacity="0.8"/>
+  <circle cx="570" cy="55" r="10" fill="#1fdc8f" opacity="0.8"/>
+  <circle cx="640" cy="70" r="10" fill="#1fdc8f" opacity="0.8"/>
+  <circle cx="710" cy="55" r="10" fill="#1fdc8f" opacity="0.8"/>
+  <circle cx="530" cy="120" r="10" fill="#1fdc8f" opacity="0.8"/>
+  <circle cx="600" cy="135" r="10" fill="#1fdc8f" opacity="0.8"/>
+  <circle cx="680" cy="120" r="10" fill="#1fdc8f" opacity="0.8"/>
+  <circle cx="750" cy="135" r="10" fill="#1fdc8f" opacity="0.8"/>
+  <circle cx="470" cy="150" r="10" fill="#1fdc8f" opacity="0.8"/>
+  <circle cx="570" cy="160" r="10" fill="#1fdc8f" opacity="0.8"/>
+  <circle cx="670" cy="160" r="10" fill="#1fdc8f" opacity="0.8"/>
+  <line x1="500" y1="70" x2="570" y2="55" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="570" y1="55" x2="640" y2="70" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="640" y1="70" x2="710" y2="55" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="500" y1="70" x2="530" y2="120" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="570" y1="55" x2="600" y2="135" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="640" y1="70" x2="680" y2="120" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="710" y1="55" x2="750" y2="135" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="530" y1="120" x2="600" y2="135" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="600" y1="135" x2="680" y2="120" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="680" y1="120" x2="750" y2="135" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="530" y1="120" x2="470" y2="150" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="600" y1="135" x2="570" y2="160" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="680" y1="120" x2="670" y2="160" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="750" y1="135" x2="670" y2="160" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="470" y1="150" x2="570" y2="160" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
+  <line x1="570" y1="160" x2="670" y2="160" stroke="#1fdc8f" stroke-width="1" opacity="0.4"/>
 </svg>
   </div>
 </div>
@@ -372,7 +439,7 @@ a.src:hover{border-color:var(--accent)}
     <p class="kicker">03</p>
     <h2>Open Source &amp; Open Weights</h2>
   </div>
-  <div class="split rise" style="margin-top:8px">
+  <div class="split rise" style="margin-top:4px">
     <div>
       <p><strong>Open source</strong> — inspect, modify, contribute.</p>
       <p><strong>Open weights</strong> — run and adapt the model.</p>
@@ -383,16 +450,16 @@ a.src:hover{border-color:var(--accent)}
         <li>Build without permission</li>
         <li>No provider lock-in</li>
       </ul>
-      <p style="margin-top:12px">AI you <strong>build on</strong> — not just consume.</p>
+      <p style="margin-top:8px">AI you <strong>build on</strong> — not just consume.</p>
     </div>
     <div style="max-width:420px">
-      <img src="slide-3.jpg" alt="Open AI — transparency and inspectability" style="width:100%;border-radius:var(--radius,4px);border:1px solid var(--line-strong)">
+      <img src="slide-3.jpg" alt="Open AI — transparency and inspectability" style="width:100%;border-radius:var(--radius);border:1px solid var(--line-strong)">
     </div>
   </div>
 </div>
   </section>
 
-  <section class="slide" data-title="From Open AI to Decentralized AI" data-notes="Open models are necessary but not sufficient. You need compute to run them, infrastructure to serve them, and incentives to sustain participation. Decentralized AI connects developers, models, compute providers, and users into a single open marketplace where each participant contributes what they have and gets rewarded. Transition: Morpheus is a real-world example.">
+  <section class="slide" data-title="From Open AI to Decentralized AI" data-notes="Open models are necessary but not sufficient. You need compute to run them, infrastructure to serve them, and incentives to sustain participation. Decentralized AI connects developers, models, compute providers, and users into a single open marketplace. Transition: Morpheus is a real-world example.">
     <div class="wrap">
   <div class="header-zone rise">
     <p class="kicker">04</p>
@@ -404,43 +471,43 @@ a.src:hover{border-color:var(--accent)}
     <p style="color:var(--accent);margin-top:4px">An open AI marketplace where anyone can participate.</p>
   </div>
   <div class="rise">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 100" style="width:100%;max-width:700px;margin-top:12px">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 100" style="width:100%;max-width:700px;margin-top:8px">
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#06b6d4"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1fdc8f"/>
     </marker>
   </defs>
-  <rect x="20" y="25" width="140" height="50" fill="rgba(6,182,212,.08)" stroke="#06b6d4" stroke-width="1.5" rx="6"/>
-  <text x="90" y="48" text-anchor="middle" fill="#06b6d4" font-size="11" font-weight="bold" font-family="monospace">DEVELOPERS</text>
-  <text x="90" y="62" text-anchor="middle" fill="#8b9bb4" font-size="9" font-family="monospace">build agents</text>
-  <line x1="160" y1="50" x2="220" y2="50" stroke="#06b6d4" stroke-width="2" marker-end="url(#arrow)"/>
-  <rect x="230" y="25" width="140" height="50" fill="rgba(6,182,212,.08)" stroke="#06b6d4" stroke-width="1.5" rx="6"/>
-  <text x="300" y="48" text-anchor="middle" fill="#06b6d4" font-size="11" font-weight="bold" font-family="monospace">MODELS</text>
-  <text x="300" y="62" text-anchor="middle" fill="#8b9bb4" font-size="9" font-family="monospace">open weights</text>
-  <line x1="370" y1="50" x2="430" y2="50" stroke="#06b6d4" stroke-width="2" marker-end="url(#arrow)"/>
-  <rect x="440" y="25" width="140" height="50" fill="rgba(6,182,212,.08)" stroke="#06b6d4" stroke-width="1.5" rx="6"/>
-  <text x="510" y="48" text-anchor="middle" fill="#06b6d4" font-size="11" font-weight="bold" font-family="monospace">COMPUTE</text>
-  <text x="510" y="62" text-anchor="middle" fill="#8b9bb4" font-size="9" font-family="monospace">GPU providers</text>
-  <line x1="580" y1="50" x2="640" y2="50" stroke="#06b6d4" stroke-width="2" marker-end="url(#arrow)"/>
-  <rect x="650" y="25" width="140" height="50" fill="rgba(6,182,212,.08)" stroke="#06b6d4" stroke-width="1.5" rx="6"/>
-  <text x="720" y="48" text-anchor="middle" fill="#06b6d4" font-size="11" font-weight="bold" font-family="monospace">USERS</text>
-  <text x="720" y="62" text-anchor="middle" fill="#8b9bb4" font-size="9" font-family="monospace">sovereign AI</text>
+  <rect x="20" y="25" width="140" height="50" fill="rgba(31,220,143,0.06)" stroke="#1fdc8f" stroke-width="1.5" rx="6"/>
+  <text x="90" y="48" text-anchor="middle" fill="#1fdc8f" font-size="11" font-weight="bold" font-family="monospace">DEVELOPERS</text>
+  <text x="90" y="62" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">build agents</text>
+  <line x1="160" y1="50" x2="220" y2="50" stroke="#1fdc8f" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="230" y="25" width="140" height="50" fill="rgba(31,220,143,0.06)" stroke="#1fdc8f" stroke-width="1.5" rx="6"/>
+  <text x="300" y="48" text-anchor="middle" fill="#1fdc8f" font-size="11" font-weight="bold" font-family="monospace">MODELS</text>
+  <text x="300" y="62" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">open weights</text>
+  <line x1="370" y1="50" x2="430" y2="50" stroke="#1fdc8f" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="440" y="25" width="140" height="50" fill="rgba(31,220,143,0.06)" stroke="#1fdc8f" stroke-width="1.5" rx="6"/>
+  <text x="510" y="48" text-anchor="middle" fill="#1fdc8f" font-size="11" font-weight="bold" font-family="monospace">COMPUTE</text>
+  <text x="510" y="62" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">GPU providers</text>
+  <line x1="580" y1="50" x2="640" y2="50" stroke="#1fdc8f" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="650" y="25" width="140" height="50" fill="rgba(31,220,143,0.06)" stroke="#1fdc8f" stroke-width="1.5" rx="6"/>
+  <text x="720" y="48" text-anchor="middle" fill="#1fdc8f" font-size="11" font-weight="bold" font-family="monospace">USERS</text>
+  <text x="720" y="62" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">sovereign AI</text>
 </svg>
   </div>
 </div>
   </section>
 
-  <section class="slide" data-title="Morpheus: An Example of DeAI" data-notes="Morpheus connects the four pillars: Code (developers), Capital (incentives), Compute (GPU providers), and Users. Developers build applications and AI agents on decentralized inference infrastructure. Compute providers contribute GPUs and serve open AI models. The bigger idea: AI should be something we collectively build, run, and control — not something we rent from a handful of companies. mor.org for more.">
+  <section class="slide" data-title="Morpheus: An Example of DeAI" data-notes="Morpheus connects the four pillars: Code (developers), Capital (incentives), Compute (GPU providers), and Users. Developers build applications and AI agents on decentralized inference infrastructure. Compute providers contribute GPUs and serve open AI models. The bigger idea: AI should be something we collectively build, run, and control — not something we rent. mor.org for more.">
     <div class="wrap">
   <div class="header-zone rise">
     <p class="kicker">05</p>
     <h2>Morpheus: An Example of DeAI</h2>
   </div>
-  <div class="split rise" style="margin-top:8px">
+  <div class="split rise" style="margin-top:4px">
     <div>
       <p>Open-source decentralized AI — <strong>private, sovereign, permissionless</strong>.</p>
-      <div style="display:flex;align-items:center;gap:8px;margin:8px 0">
-        <img src="data:image/png;base64,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" alt="Morpheus" style="height:20px;width:20px;border:none">
+      <div style="display:flex;align-items:center;gap:8px;margin:6px 0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" style="height:18px;width:36px;display:inline-block;vertical-align:middle" fill="#1fdc8f"><path d="M893.94,181.91l34.57-74.69L609.79,241.86c-13.55,5.72-25.41,14.82-34.45,26.43L500,365.04l-75.35-96.75 c-9.04-11.6-20.9-20.7-34.45-26.43L71.49,107.22l34.57,74.69l258.26,109.1v27.96L122.14,216.66l34.57,74.69l207.61,87.7v27.96 L172.8,326.1l34.58,74.69l156.94,66.31l60.77,25.67V369.26L500,465.43l74.92-96.17v123.52l60.77-25.67l156.94-66.31l34.58-74.69 l-191.52,80.91v-27.96l207.61-87.7l34.57-74.69L635.68,318.97v-27.96L893.94,181.91z"/></svg>
         <span style="font-family:var(--mono);font-size:12px;color:var(--accent)">Connects:</span>
       </div>
       <ul class="clean" style="margin-top:4px">
@@ -449,10 +516,10 @@ a.src:hover{border-color:var(--accent)}
         <li>Compute — GPU providers serve models</li>
         <li>Users — sovereign AI access</li>
       </ul>
-      <p style="margin-top:8px"><a href="https://mor.org" class="src" target="_blank">mor.org</a></p>
+      <p style="margin-top:6px"><a href="https://mor.org" class="src" target="_blank">mor.org</a></p>
     </div>
     <div style="max-width:420px">
-      <img src="slide-5.jpg" alt="Morpheus decentralized AI network" style="width:100%;border-radius:var(--radius,4px);border:1px solid var(--line-strong)">
+      <img src="slide-5.jpg" alt="Morpheus decentralized AI network" style="width:100%;border-radius:var(--radius);border:1px solid var(--line-strong)">
     </div>
   </div>
   <div class="rise takeaway">
